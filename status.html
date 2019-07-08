@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang='hu'>
+
+<head>
+	<title>GombaNet > státusz</title>
+	$(if refresh-timeout)
+	<meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+	$(endif)
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="expires" content="-1">
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+	<link href="favicon.ico" rel="shortcut icon" />
+	<style type="text/css">
+		body {
+			width: 100vw;
+			height: 100vh;
+			background-image: url('./img/background.jpg');
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			overflow: hidden;
+		}
+
+		.center {
+			width: 50vw;
+			margin-left: 25vw;
+			margin-top: 25vh;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			background-color: rgba(255, 255, 255, 0.8);
+			border-radius: 25px;
+			padding-top: 25px;
+			padding-bottom: 25px;
+		}
+
+		table,
+		caption,
+		tbody,
+		tfoot,
+		thead,
+		tr,
+		th,
+		td {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			outline: 0;
+			font-size: 100%;
+			vertical-align: baseline;
+			background: transparent;
+		}
+
+		td:first-child {
+			text-align: left;
+		}
+
+		td:last-child {
+			text-align: right;
+		}
+
+		td {
+			padding-bottom: 5px;
+		}
+
+		a {
+			text-decoration: none;
+			transition: .2s ease-in-out;
+		}
+
+		a:hover {
+			color: steelblue;
+		}
+	</style>
+	<script language="JavaScript">
+		<!--
+		$(
+			if advert - pending == 'yes')
+		var popup = '';
+
+		function focusAdvert() {
+			if (window.focus) popup.focus();
+		}
+
+		function openAdvert() {
+			popup = open('$(link-advert)', 'hotspot_advert', '');
+			setTimeout("focusAdvert()", 1000);
+		}
+		$(endif)
+
+		function openLogout() {
+			if (window.name != 'hotspot_status') return true;
+			open('$(link-logout)', 'hotspot_logout',
+				'toolbar=0,location=0,directories=0,status=0,menubars=0,resizable=1,width=280,height=250');
+			window.close();
+			return false;
+		}
+		//
+		-->
+	</script>
+</head>
+
+<body $(if advert-pending=='yes' ) onLoad="openAdvert()" $(endif)>
+	<div class='center'>
+		<form action="$(link-logout)" name="logout" onSubmit="return openLogout()">
+			$(if login-by == 'trial')
+			<h3>Üdv, próba felhasználó!</h3>
+			$(elif login-by != 'mac')
+			<h3>Üdvözöllek $(username)!</h3>
+			$(endif)
+			<table>
+				<tr>
+					<td>IP cím:</td>
+					<td>$(ip)</td>
+				</tr>
+				<tr>
+					<td>byte fel/le:</td>
+					<td>$(bytes-in-nice) / $(bytes-out-nice)</td>
+				</tr>
+				$(if session-time-left)
+				<tr>
+					<td>Eltelt idő / Fennmaradó idő:</td>
+					<td>$(uptime) / $(session-time-left)</td>
+				</tr>
+				$(else)
+				<tr>
+					<td>Eltelt idő:</td>
+					<td>$(uptime)</td>
+				</tr>
+				$(endif)
+				$(if blocked == 'yes')
+				<tr>
+					<td>Állapot:</td>
+					<td>
+						<div style="color: rgb(206, 78, 78);">
+							<a href="$(link-advert)" target="hotspot_advert">hirdetés</a> kötöelező</div>
+					</td>
+				</tr>
+				$(elif refresh-timeout)
+				<tr>
+					<td align="right">Állapot frissítése:</td>
+					<td>$(refresh-timeout)</td>
+				</tr>
+				$(endif)
+
+			</table>
+			$(if login-by-mac != 'yes')
+			<!-- user manager link. if user manager resides on other router, replace $(hostname) by its address
+<button onclick="document.location='http://$(hostname)/user?subs='; return false;">status</button>
+<!-- end of user manager link -->
+			<input type="submit" value="Kijelentkezés">
+			$(endif)
+		</form>
+	</div>
+</body>
+
+</html>
